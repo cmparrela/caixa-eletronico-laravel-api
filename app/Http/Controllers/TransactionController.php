@@ -28,7 +28,7 @@ class TransactionController extends Controller
     {
         $data = $request->only(['type', 'value', 'account_id']);
         $transaction = $this->transactionService->createNew($data);
-        return response()->json($transaction, 201);
+        return response()->json($transaction, 202);
     }
 
 }
