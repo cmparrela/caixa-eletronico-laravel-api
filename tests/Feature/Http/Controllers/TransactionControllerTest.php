@@ -23,8 +23,8 @@ class TransactionControllerTest extends TestCase
 
     private function createTransaction()
     {
-        $transaction = Account::factory()->forUser()->create();
-        return Transaction::factory()->for($transaction)->create()->fresh();
+        $account = Account::factory()->forUser()->create();
+        return Transaction::factory()->for($account)->create()->fresh();
     }
 
     public function testIndex()
@@ -38,7 +38,7 @@ class TransactionControllerTest extends TestCase
     public function testIndexFilteredByAccount()
     {
         $transaction = $this->createTransaction();
-        $response = $this->get("/transactions?account_id={$transaction->id}");
+        $response = $this->get("/transactions?account_id={$transaction->account_id}");
         $response
             ->assertStatus(200)
             ->assertJson([$transaction->toArray()]);
@@ -119,6 +119,18 @@ class TransactionControllerTest extends TestCase
         $response = $this->json('POST', "/transactions", $data);
         $response->assertStatus(422);
         $response->assertJsonFragment(['We do not have money bill available to withdraw this amount. Money bill available: 100, 50 and 20']);
+    }
+
+    public function testCreateValidationInsufficientBalance()
+    {
+        $data = [
+            'type' => Transaction::TYPE_WITHDRAWAL,
+            'value' => (int) $this->transaction->account->balance + 10,
+            'account_id' => $this->transaction->account_id,
+        ];
+        $response = $this->json('POST', "/transactions", $data);
+        $response->assertStatus(422);
+        $response->assertJsonFragment(['Insufficient balance to perform the transaction']);
     }
 
 }

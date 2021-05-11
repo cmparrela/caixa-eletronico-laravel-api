@@ -1,17 +1,21 @@
 <?php
 namespace App\Services;
 
+use App\Jobs\TransactionJob;
 use App\Models\Transaction;
+use App\Rules\HasBalance;
 use App\Rules\WithdrawalHasMoneyBill;
 use Illuminate\Support\Facades\Validator;
 
 class TransactionService
 {
-    private $model;
+    protected $model;
+    protected $accountService;
 
-    public function __construct(Transaction $transaction)
+    public function __construct(Transaction $transaction, AccountService $accountService)
     {
         $this->model = $transaction;
+        $this->accountService = $accountService;
     }
 
     public function getByAccount(int $accountId)
@@ -37,9 +41,14 @@ class TransactionService
 
         Validator::make($attributes, [
             'type' => "required|in:$deposit,$withdrawal",
-            'value' => ["integer", "exclude_if:type,$deposit", new WithdrawalHasMoneyBill],
+            'value' => ["integer"],
             'account_id' => 'required|exists:accounts,id,deleted_at,NULL',
         ])->validate();
+
+        Validator::make($attributes, [
+            'value' => ["exclude_if:type,$deposit", new WithdrawalHasMoneyBill, new HasBalance($this->accountService, $attributes['account_id'])],
+        ])->validate();
+
     }
 
 }
