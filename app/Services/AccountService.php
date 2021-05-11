@@ -45,4 +45,9 @@ class AccountService
         }
         return false;
     }
+
+    public function findById(int $id)
+    {
+        return $this->model->find($id);
+    }
 }

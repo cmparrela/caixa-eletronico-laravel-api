@@ -44,7 +44,7 @@ class AccountControllerTest extends TestCase
     }
 
     public function testCreateValidationRequired()
-    {   
+    {
         $response = $this->json('POST', "/users/{$this->account->user_id}/accounts", []);
         $this->assertInvalidationFields($response, ['type'], 'required');
     }
@@ -55,12 +55,14 @@ class AccountControllerTest extends TestCase
         $response = $this->json('POST', "/users/{$this->account->user_id}/accounts", $data);
         $this->assertInvalidationFields($response, ['type'], 'in');
     }
+
     public function testCreateValidationNumeric()
     {
         $data = ['balance' => 'saldo invalido'];
         $response = $this->json('POST', "/users/{$this->account->user_id}/accounts", $data);
         $this->assertInvalidationFields($response, ['balance'], 'numeric');
     }
+
     public function testCreateValidationExistsUser()
     {
         $response = $this->json('POST', "/users/2000000/accounts", []);

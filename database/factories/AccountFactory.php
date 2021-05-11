@@ -14,7 +14,7 @@ class AccountFactory extends Factory
         $types = [Account::TYPE_CHECKING, Account::TYPE_SAVINGS];
         return [
             'type' => $types[array_rand($types)],
-            'balance' => $this->faker->randomFloat(2, 50, 10000),
+            'balance' => $this->faker->randomFloat(2, 1000, 10000),
         ];
     }
 }

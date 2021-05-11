@@ -22,8 +22,8 @@ class AccountController extends Controller
     public function create(Request $request, $userId)
     {
         $data = $request->only(['type', 'balance']);
-        $user = $this->accountService->createNewAccount($data, $userId);
-        return response()->json($user, 201);
+        $account = $this->accountService->createNewAccount($data, $userId);
+        return response()->json($account, 201);
     }
 
     public function destroy($id)

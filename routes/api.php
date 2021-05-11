@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,6 @@ Route::delete('users/{id}', [UserController::class, 'destroy']);
 Route::get('users/{id}/accounts', [AccountController::class, 'show']);
 Route::post('users/{id}/accounts', [AccountController::class, 'create']);
 Route::delete('accounts/{id}', [AccountController::class, 'destroy']);
+
+Route::get('transactions', [TransactionController::class, 'index']);
+Route::post('transactions', [TransactionController::class, 'create']);

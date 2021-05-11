@@ -14,11 +14,7 @@ class User extends Model
 
     protected $table = 'users';
 
-    protected $fillable = [
-        'name',
-        'birth_date',
-        'cpf',
-    ];
+    protected $fillable = ['name', 'birth_date', 'cpf'];
 
     public function accounts()
     {
