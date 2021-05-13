@@ -18,6 +18,14 @@ A instalação das dependências, criação do .env, execução dos migrations e
 
 Agora você deve ser capaz de visitar a página da aplicação http://localhost/ e começar a usar o sistema
 
+## Execução dos teste
+
+É possível executar os testes com o pphunit dentro do container, exemplo:
+
+```sh
+$ docker exec -it desafio_laravel.php vendor/bin/phpunit 
+```
+
 ## Endpoints
 ### Users
 - `GET users`, lista todos os usuários
