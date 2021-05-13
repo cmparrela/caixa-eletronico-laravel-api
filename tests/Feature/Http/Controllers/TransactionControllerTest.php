@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Jobs\TransactionJob;
 use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 use Tests\Traits\TestValidations;
 
@@ -55,12 +57,14 @@ class TransactionControllerTest extends TestCase
 
         $data['value'] = number_format($data['value'], 2);
         $response
-            ->assertStatus(201)
-            ->assertJsonFragment($data);
+            ->assertStatus(202)
+            ->assertJsonFragment(['Transaction was sent to queue']);
     }
 
-    public function testCreateWithdrawal()
+    public function testCreateWithdrawalAndJobDispatche()
     {
+        Queue::fake();
+
         $data = [
             'type' => Transaction::TYPE_WITHDRAWAL,
             'value' => 60,
@@ -70,8 +74,11 @@ class TransactionControllerTest extends TestCase
 
         $data['value'] = number_format($data['value'], 2);
         $response
-            ->assertStatus(201)
-            ->assertJsonFragment($data);
+            ->assertStatus(202)
+            ->assertJsonFragment(['Transaction was sent to queue']);
+
+        Queue::assertPushed(TransactionJob::class);
+
     }
 
     public function testCreateValidationRequired()
