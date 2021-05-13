@@ -17,3 +17,23 @@ A instalação das dependências, criação do .env, execução dos migrations e
 ```
 
 Agora você deve ser capaz de visitar a página da aplicação http://localhost/ e começar a usar o sistema
+
+## Endpoints
+### Users
+- `GET users`, lista todos os usuários
+- `GET users/{id}`, mostra detalhe de usuário específico
+- `POST users`, cadastra usuário
+- `PUT users/{id}`, atualiza usuário
+- `DELETE users/{id}`, deleta usuário
+
+### Accounts
+- `GET users/{id}/accounts` lista contas do usuário
+- `POST users/{id}/accounts` cadastra contas
+- `DELETE users/{id}/accounts/{id}` exclui conta
+
+### Transactions
+- `GET transactions` lista todas as movimentações
+- `GET transactions?account=id` lista as movimentações da conta
+- `POST transactions` fazer uma transação (deposito ou saque)
+
+### Para mais detalhe visite a documentação completa [API Documentation](https://github.com/cmparrela/caixa-eletronico-laravel-api/wiki/API-Documentation)
