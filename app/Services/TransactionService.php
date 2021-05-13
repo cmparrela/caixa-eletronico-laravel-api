@@ -31,7 +31,8 @@ class TransactionService
     public function createNew(array $attributes)
     {
         $this->validateStore($attributes);
-        return $this->model->create($attributes)->fresh();
+        TransactionJob::dispatch($attributes);
+        return ["message" => "Transaction was sent to queue"];
     }
 
     protected function validateStore(array $attributes)
